@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SilentGuard — Ambient AI Safety</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0F1C;
+    --panel:#111A2E;
+    --panel-2:#16213A;
+    --amber:#FFB020;
+    --amber-dim:#7A5613;
+    --cyan:#5DD6C8;
+    --text:#EEF1F7;
+    --text-mid:#A6B0C3;
+    --text-dim:#5E6A82;
+    --line:rgba(255,255,255,0.08);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:1000px; margin:0 auto; padding:0 32px;}
+  h1,h2,h3{font-family:'Space Grotesk', sans-serif; font-weight:700; letter-spacing:-0.02em;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--amber);
+  }
+
+  /* HERO */
+  .hero{
+    min-height:92vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    position:relative;
+    padding:80px 0 60px;
+    border-bottom:1px solid var(--line);
+  }
+  .hero .eyebrow{margin-bottom:20px;}
+  .hero h1{font-size:clamp(48px,9vw,96px); line-height:0.95; margin-bottom:20px;}
+  .hero h1 span{color:var(--amber);}
+  .hero p.tag{font-size:20px; color:var(--text-mid); max-width:520px; margin-bottom:48px;}
+
+  .wave{width:100%; height:90px; margin-top:20px;}
+  .wave path{fill:none; stroke:var(--cyan); stroke-width:2; opacity:0.85;}
+  .wave path.spike{stroke:var(--amber);}
+
+  .pulse-label{
+    display:flex; align-items:center; gap:10px;
+    font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--text-dim);
+    margin-top:10px;
+  }
+  .dot{width:7px; height:7px; border-radius:50%; background:var(--cyan); animation:blink 1.6s infinite;}
+  @keyframes blink{0%,100%{opacity:1;} 50%{opacity:0.25;}}
+
+  /* SECTION SHARED */
+  section{padding:110px 0; border-bottom:1px solid var(--line);}
+  .num{font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--text-dim); margin-bottom:14px;}
+  section h2{font-size:clamp(30px,5vw,46px); margin-bottom:20px; max-width:680px;}
+  section > .wrap > p.lead{font-size:18px; color:var(--text-mid); max-width:600px; margin-bottom:56px;}
+
+  /* PROBLEM */
+  .problem-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .p-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    padding:28px 24px;
+  }
+  .p-card .stat{font-family:'Space Grotesk',sans-serif; font-size:34px; color:var(--amber); margin-bottom:10px;}
+  .p-card p{color:var(--text-mid); font-size:14.5px;}
+
+  /* SOLUTION / HOW IT WORKS */
+  .flow{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:64px;}
+  .flow-step{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    padding:24px 20px; position:relative;
+  }
+  .flow-step .fnum{font-family:'IBM Plex Mono',monospace; color:var(--cyan); font-size:13px; margin-bottom:14px;}
+  .flow-step h3{font-size:16px; font-weight:500; margin-bottom:8px; font-family:'Inter'; color:var(--text);}
+  .flow-step p{font-size:13.5px; color:var(--text-mid);}
+
+  .spec-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  .spec{
+    border:1px solid var(--line); border-radius:14px; padding:24px;
+    background:linear-gradient(180deg, var(--panel-2), var(--panel));
+  }
+  .spec h3{font-size:16px; font-weight:500; color:var(--amber); margin-bottom:8px; font-family:'Inter';}
+  .spec p{font-size:13.5px; color:var(--text-mid);}
+
+  /* AUDIENCE */
+  .aud-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:20px;}
+  .aud-card{
+    border:1px solid var(--line); border-radius:14px; padding:32px;
+    background:var(--panel);
+  }
+  .aud-card .tag2{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--cyan); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:10px; display:block;}
+  .aud-card h3{font-size:20px; margin-bottom:10px; font-family:'Space Grotesk';}
+  .aud-card p{font-size:14px; color:var(--text-mid);}
+
+  /* FOOTER */
+  footer{padding:80px 0 60px; text-align:center;}
+  footer h2{font-size:clamp(28px,5vw,42px); margin-bottom:16px;}
+  footer p{color:var(--text-mid); font-size:15px; margin-bottom:36px;}
+  .cta{
+    display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:13px;
+    color:var(--bg); background:var(--amber); padding:14px 30px; border-radius:8px;
+    letter-spacing:0.04em; text-decoration:none; font-weight:500;
+  }
+  .foot-meta{margin-top:60px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-dim);}
+
+  @media(max-width:760px){
+    .problem-grid, .flow, .spec-grid, .aud-grid{grid-template-columns:1fr;}
+    section{padding:70px 0;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Ambient AI Safety · National Pitch Competition</div>
+    <h1>Silent<span>Guard</span></h1>
+    <p class="tag">Personal safety that reacts before you even reach for your phone.</p>
+
+    <svg class="wave" viewBox="0 0 900 90" preserveAspectRatio="none">
+      <path d="M0,45 Q30,40 60,45 T120,45 T180,45 T240,45 T300,44 T360,46" />
+      <path class="spike" d="M360,46 C375,46 380,5 395,80 S410,20 420,45 T480,45" />
+      <path d="M480,45 Q540,42 600,45 T720,45 T840,45 T900,45" />
+    </svg>
+    <div class="pulse-label"><span class="dot"></span> listening quietly · on-device · nothing leaves your phone</div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="num">01 / Problem</div>
+    <h2>Panic buttons fail exactly when you need them most.</h2>
+    <p class="lead">Every safety app on the market assumes the same impossible thing: that in the middle of an emergency, you'll have a free hand, a clear head, and the time to open an app.</p>
+    <div class="problem-grid">
+      <div class="p-card">
+        <div class="stat">0 sec</div>
+        <p>The time you actually have to fumble for your phone during an assault, a fall, or a struggle.</p>
+      </div>
+      <div class="p-card">
+        <div class="stat">SOS</div>
+        <p>Existing apps rely entirely on a manual trigger — one press, correctly aimed, under panic.</p>
+      </div>
+      <div class="p-card">
+        <div class="stat">Alone</div>
+        <p>Solo commuters, delivery workers, elderly residents — no one watching, nothing watching back.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="num">02 / Solution</div>
+    <h2>An AI that listens for distress, and acts without being asked.</h2>
+    <p class="lead">SilentGuard runs quietly in the background, reading audio and motion patterns on-device — and only speaks up when something is genuinely wrong.</p>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="fnum">STEP 01</div>
+        <h3>Listen</h3>
+        <p>Mic and motion sensors run a lightweight on-device model — always on, nothing recorded by default.</p>
+      </div>
+      <div class="flow-step">
+        <div class="fnum">STEP 02</div>
+        <h3>Detect</h3>
+        <p>Fuses audio + motion signals — a scream, a fall, a struggle — to flag distress with very low false positives.</p>
+      </div>
+      <div class="flow-step">
+        <div class="fnum">STEP 03</div>
+        <h3>Confirm</h3>
+        <p>A short grace period lets you cancel with a gesture or safe-word before anything is sent.</p>
+      </div>
+      <div class="flow-step">
+        <div class="fnum">STEP 04</div>
+        <h3>Alert</h3>
+        <p>Live location + audio snippet auto-shared with contacts, via app, SMS fallback, or local helpline.</p>
+      </div>
+    </div>
+
+    <div class="spec-grid">
+      <div class="spec">
+        <h3>Zero-action safety</h3>
+        <p>No button, no unlocking, no app to open — protection that's already running before you need it.</p>
+      </div>
+      <div class="spec">
+        <h3>Privacy by design</h3>
+        <p>On-device detection only — audio is analyzed, never streamed or stored, unless a real alert fires.</p>
+      </div>
+      <div class="spec">
+        <h3>Multi-signal accuracy</h3>
+        <p>Audio + motion fusion cuts false alarms far below single-signal safety apps.</p>
+      </div>
+      <div class="spec">
+        <h3>Works anywhere</h3>
+        <p>SMS fallback means it functions with poor connectivity and on low-end phones.</p>
+      </div>
+      <div class="spec">
+        <h3>Grace-period control</h3>
+        <p>You stay in control — a simple cancel window keeps the system trustworthy, not trigger-happy.</p>
+      </div>
+      <div class="spec">
+        <h3>Built-in distribution</h3>
+        <p>Deployable fleet-wide by universities, cab platforms, and employers as a safety-compliance layer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="border-bottom:none;">
+  <div class="wrap">
+    <div class="num">03 / Who it's for</div>
+    <h2>Built for the people existing safety tech leaves out.</h2>
+    <div class="aud-grid">
+      <div class="aud-card">
+        <span class="tag2">Primary</span>
+        <h3>Women commuters &amp; students</h3>
+        <p>Late-night travel, unfamiliar routes, campus walks — protection that doesn't require a free hand.</p>
+      </div>
+      <div class="aud-card">
+        <span class="tag2">Primary</span>
+        <h3>Elderly living alone</h3>
+        <p>Fall and distress detection for a demographic that often can't reach a phone in an emergency.</p>
+      </div>
+      <div class="aud-card">
+        <span class="tag2">B2B2C</span>
+        <h3>Gig &amp; field workforce</h3>
+        <p>Delivery riders, cab drivers, field agents — employers deploy it fleet-wide for duty-of-care compliance.</p>
+      </div>
+      <div class="aud-card">
+        <span class="tag2">B2B2C</span>
+        <h3>Universities &amp; campuses</h3>
+        <p>Institution-wide rollout as part of a student safety program, integrated with campus security.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h2>SilentGuard</h2>
+    <p>Safety that listens first, and acts before you ask.</p>
+    <div class="foot-meta">Pitch deck · National Startup Pitching Competition · 2026</div>
+  </div>
+</footer>
+
+</body>
+</html>
